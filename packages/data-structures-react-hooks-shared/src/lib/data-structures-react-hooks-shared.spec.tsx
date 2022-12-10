@@ -1,9 +1,9 @@
 import { dataStructuresReactHooksShared } from './data-structures-react-hooks-shared';
 import {render} from "@testing-library/react";
 import * as React from "react";
-import {UseLinearDataStructure} from "./interfaces";
+import {IUseLinearDataStructure} from "./models";
 
-export const itShouldReturnAllBaseMethods = <T, S>(hook: () => UseLinearDataStructure<T, S>) => {
+export const itShouldReturnAllBaseMethods = <T, S>(hook: () => IUseLinearDataStructure<T, S>) => {
 
   it('hook should return all base methods', () => {
     const Test = () => {

@@ -29,6 +29,9 @@
       "@data-structures-react-hooks/use-queue": [
         "packages/use-queue/src/index.ts"
       ],
+      "@data-structures-react-hooks/use-rxjs-subscribe": [
+        "packages/use-rxjs-subscribe/src/index.ts"
+      ],
       "@data-structures-react-hooks/use-set": ["packages/use-set/src/index.ts"],
       "@data-structures-react-hooks/use-stack": [
         "packages/use-stack/src/index.ts"

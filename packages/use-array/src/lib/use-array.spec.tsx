@@ -526,7 +526,11 @@ describe('useArray', () => {
         useEffect(() => {
           array.update(1, 4);
           setTimeout(() => {
-            expect(array).toBe([1, 4, 3]);
+            expect(array).toEqual([1, 4, 3]);
+            array.update(0, 10);
+            setTimeout(() => {
+              expect(array).toEqual([10, 4, 3]);
+            }, 0)
           },0);
         }, [])
         return (<></>);

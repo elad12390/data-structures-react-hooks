@@ -2,7 +2,7 @@ import {Comparator2, ValueIteratee} from "lodash";
 
 export type Predicate<T> = (item: T) => boolean;
 
-export type UseDataStructure<T, S> = {
+export type IUseDataStructure<T, S> = {
   readonly current: S;
   readonly empty: boolean;
   readonly notEmpty: boolean;
@@ -18,7 +18,7 @@ export type UseDataStructure<T, S> = {
   toString(): string;
 }
 
-export type UseLinearDataStructure<T, S> = UseDataStructure<T, S> & {
+export type IUseLinearDataStructure<T, S> = IUseDataStructure<T, S> & {
   difference: (other: Iterable<T>) => T[];
   differenceBy: (other: Iterable<T>, by: ValueIteratee<T>) => T[];
   entries: () => IterableIterator<[number, T]>;

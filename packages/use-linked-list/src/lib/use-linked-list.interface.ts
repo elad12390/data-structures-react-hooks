@@ -1,4 +1,5 @@
-import {Predicate, UseLinearDataStructure} from '@data-structures-react-hooks/data-structures-react-hooks-shared';
+import {Predicate, IUseLinearDataStructure} from '@data-structures-react-hooks/data-structures-react-hooks-shared';
+import {LinkedList} from "./linked-list.class";
 
 export interface LinkedListNode<T> {
   value: T;
@@ -6,7 +7,7 @@ export interface LinkedListNode<T> {
   prev: LinkedListNode<T> | null;
 }
 
-export type IUseLinkedList<T> = UseLinearDataStructure<T, Array<T>> & {
+export type IUseLinkedList<T> = IUseLinearDataStructure<T, LinkedList<T>> & {
   readonly length: number;
   at: (idx: number) => T | undefined;
   filter: (pred: Predicate<T>) => T[];

@@ -2,6 +2,7 @@ import { useLinkedList } from './use-linked-list';
 import { render } from "@testing-library/react";
 import { useEffect } from 'react';
 import * as React from 'react';
+import {LinkedList} from "./linked-list.class";
 
 describe('useArray', () => {
   describe('Basic Tests', () => {
@@ -82,7 +83,7 @@ describe('useArray', () => {
     it('should return current array shallow copy', () => {
       const Test = () => {
         const array = useLinkedList([1, 2, 3]);
-        expect(array.current).toEqual([1, 2, 3]);
+        expect(array.current).toEqual(new LinkedList([1, 2, 3]));
         return (<></>);
       }
 
@@ -92,7 +93,7 @@ describe('useArray', () => {
       const Test = () => {
         const array = useLinkedList([1, 2, 3]);
         useEffect(() => {
-          array.merge([4, 5, 6]);
+          array.merge(new LinkedList([4, 5, 6]));
           setTimeout(() => {
             expect(array.current).toEqual([1, 2, 3, 4, 5, 6]);
           }, 0)

@@ -1,6 +1,6 @@
-import {Predicate, UseLinearDataStructure} from '@data-structures-react-hooks/data-structures-react-hooks-shared';
+import {Predicate, IUseLinearDataStructure} from '@data-structures-react-hooks/data-structures-react-hooks-shared';
 
-export type IUseArray<T> = UseLinearDataStructure<T, Array<T>> & {
+export type IUseArray<T> = IUseLinearDataStructure<T, Array<T>> & {
   readonly length: number;
   at: (idx: number) => T | undefined;
   filter: (pred: Predicate<T>) => T[];

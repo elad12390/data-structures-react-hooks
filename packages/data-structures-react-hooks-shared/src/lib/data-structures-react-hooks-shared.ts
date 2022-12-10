@@ -1,11 +1,11 @@
-import {Predicate, UseDataStructure, UseLinearDataStructure} from "./interfaces";
+import {Predicate, IUseDataStructure, IUseLinearDataStructure} from "./models";
 import {Comparator2, ValueIteratee, difference, differenceBy, intersection, intersectionBy, intersectionWith} from "lodash";
 
 export function dataStructuresReactHooksShared(): string {
   return 'data-structures-react-hooks-shared';
 }
 
-export const sharedLinearDataFunctions = <T, S>(data: UseDataStructure<T, S>): UseLinearDataStructure<T, S> => ({
+export const sharedLinearDataFunctions = <T, S>(data: IUseDataStructure<T, S>): IUseLinearDataStructure<T, S> => ({
   ...data,
   difference: (other: Iterable<T>): T[] => {
     return difference([...data], [...other]);

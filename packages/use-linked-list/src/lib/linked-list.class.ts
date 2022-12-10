@@ -2,8 +2,11 @@ import {LinkedListNode} from "./use-linked-list.interface";
 import {Predicate} from "@data-structures-react-hooks/data-structures-react-hooks-shared";
 
 export class LinkedList<T> {
+
   head: LinkedListNode<T> | null = null;
+
   tail: LinkedListNode<T> | null = null;
+
   length = 0;
 
   constructor(initialValues?: Iterable<T>) {
