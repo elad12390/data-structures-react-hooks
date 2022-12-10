@@ -1,0 +1,36 @@
+{
+  "name": "data-structures-react-hooks-shared",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/data-structures-react-hooks-shared/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/data-structures-react-hooks-shared",
+        "main": "packages/data-structures-react-hooks-shared/src/index.ts",
+        "tsConfig": "packages/data-structures-react-hooks-shared/tsconfig.lib.json",
+        "assets": ["packages/data-structures-react-hooks-shared/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "packages/data-structures-react-hooks-shared/**/*.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/data-structures-react-hooks-shared/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

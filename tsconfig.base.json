@@ -8,13 +8,22 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
+    "esModuleInterop": true,
+    "jsx": "react",
+    "target": "ES6",
     "module": "esnext",
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@data-structures-react-hooks/data-structures-react-hooks-shared": [
+        "packages/data-structures-react-hooks-shared/src/index.ts"
+      ],
+      "@data-structures-react-hooks/use-array": [
+        "packages/use-array/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
