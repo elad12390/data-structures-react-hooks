@@ -1,43 +1,20 @@
-import {Predicate} from '@data-structures-react-hooks/data-structures-react-hooks-shared';
-import {Comparator2, ValueIteratee} from "lodash";
+import {Predicate, UseLinearDataStructure} from '@data-structures-react-hooks/data-structures-react-hooks-shared';
 
-export interface IUseArray<T> {
-  readonly current: Array<T>;
+export type IUseArray<T> = UseLinearDataStructure<T, Array<T>> & {
   readonly length: number;
-  readonly empty: boolean;
-  readonly notEmpty: boolean;
   at: (idx: number) => T | undefined;
-  difference: (other: Iterable<T>) => T[];
-  differenceBy: (other: Iterable<T>, by: ValueIteratee<T>) => T[];
-  entries: () => IterableIterator<[number, T]>;
-  every: (pred: Predicate<T>) => boolean;
   filter: (pred: Predicate<T>) => T[];
-  find: (pred: Predicate<T>) => T | undefined;
-  findAndUpdate: (pred: Predicate<T>, updatedItem: Partial<T>) => void;
   findIndex: (pred: Predicate<T>) => number;
-  includes: (item: T) => boolean;
   indexOf: (item: T) => number;
-  intersection: (other: Iterable<T>) => T[];
-  intersectionBy: (other: Iterable<T>, iteratee: ValueIteratee<T>) => T[];
-  intersectionWith: (other: Iterable<T>, pred: Comparator2<T, T>) => T[];
-  map: <S>(mapFn: (value: T, index?: number, array?: T[]) => S) => S[];
+  map: (mapFn: (value: T, index?: number, array?: T[]) => T) => Array<T>;
   pop: () => T;
   push: (newItem: T) => T;
   pushRange: (newItems: Iterable<T>) => void;
   reduce: <S>(reduceFunction: (previousValue: S, currentValue: T) => S, initialValue: S) => S;
-  remove: (item: T) => void;
-  removeAll: () => void;
   removeAt: (idx: number) => void;
   removeRange: (start: number, end: number) => void;
-  set: (newArray: T[]) => void;
-  size: (pred?: Predicate<T>) => number;
   slice: (start: number, end: number) => T[];
   splice: (start: number, deleteCount: number, ...items: T[]) => T[];
-  some: (pred: Predicate<T>) => boolean;
-  sort: (compareFn: (a: T, b: T) => number) => void;
   update: (idx: number, updatedItem: Partial<T>) => void;
-  values: () => IterableIterator<T>;
-  [Symbol.iterator](): Generator<T>;
-  toString(): string;
-  [key: string | symbol]: any;
+  [idx: number]: T;
 }
