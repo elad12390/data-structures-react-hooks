@@ -104,13 +104,6 @@ export class UseArray<T> extends UseLinearDataStructureClass<T, Array<T>> implem
     });
   }
 
-  hook(initialValue: T[] = []): UseArray<T> {
-    const [state, setState] = useState<Array<T>>(initialValue ?? []);
-    this.state = state;
-    this.setState = setState;
-    return this;
-  }
-
   at(idx: number) {
     return this.state.at(idx);
   }
