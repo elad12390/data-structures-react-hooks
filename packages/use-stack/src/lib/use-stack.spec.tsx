@@ -1,21 +1,23 @@
-import { useSet } from './use-set';
 import {render} from "@testing-library/react";
 import * as React from "react";
 import {useEffect} from "react";
+import {useStack} from "./use-stack";
 
-describe('useSet', () => {
+describe('useStack', () => {
   describe('Basic Tests', () => {
+
     it('hook should not crash', () => {
       const Test = () => {
-        useSet();
+        useStack([1, 2, 3]);
         return (<></>);
       }
 
       render(<Test/>);
     });
+
     it('should have all base methods', () => {
       const Test = () => {
-        const hookValue = useSet([1,2,3]);
+        const hookValue = useStack([1,2,3]);
 
         expect(hookValue).toHaveProperty('current');
         expect(hookValue).toHaveProperty('empty');
@@ -30,6 +32,7 @@ describe('useSet', () => {
         expect(hookValue).toHaveProperty('intersection');
         expect(hookValue).toHaveProperty('intersectionBy');
         expect(hookValue).toHaveProperty('intersectionWith');
+        expect(hookValue).toHaveProperty('remove');
         expect(hookValue).toHaveProperty('removeAll');
         expect(hookValue).toHaveProperty('set');
         expect(hookValue).toHaveProperty('size');
@@ -44,40 +47,42 @@ describe('useSet', () => {
 
       render(<Test/>);
     });
-    it('should have all extension methods', () => {
-      const Test = () => {
-        const hookValue = useSet([1,2,3]);
 
-        expect(hookValue).toHaveProperty('add');
-        expect(hookValue).toHaveProperty('clear');
-        expect(hookValue).toHaveProperty('delete');
-        expect(hookValue).toHaveProperty('addRange');
-        expect(hookValue).toHaveProperty('has');
+    it('should have extra methods', () => {
+      const Test = () => {
+        const stack = useStack([1, 2, 3]);
+
+        expect(stack).toHaveProperty('push');
+        expect(stack).toHaveProperty('pop');
+        expect(stack).toHaveProperty('peek');
+
+        expect(stack[Symbol.iterator]).toBeDefined();
+        expect(stack.toString).toBeDefined();
 
         return (<></>);
       }
 
       render(<Test/>);
     });
-  });
+  })
 
   describe('Base Method Tests', () => {
-    it('should return current set shallow copy', () => {
+    it('should return current array shallow copy', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.current).toEqual(new Set([1, 2, 3]));
+        const stack = useStack([1, 2, 3]);
+        expect(stack.current).toEqual([1, 2, 3]);
         return (<></>);
       }
 
       render(<Test/>);
     });
-    it('should merge sets', () => {
+    it('should merge arrays', () => {
       const Test = () => {
-        const array = useSet([1, 2, 3]);
+        const stack = useStack([1, 2, 3]);
         useEffect(() => {
-          array.merge(new Set([3, 4, 5, 6]));
+          stack.merge([4, 5, 6]);
           setTimeout(() => {
-            expect(array.current).toEqual(new Set([1, 2, 3, 4, 5, 6]));
+            expect(stack.current).toEqual([1, 2, 3, 4, 5, 6]);
           }, 0)
         }, [])
         return (<></>);
@@ -87,8 +92,8 @@ describe('useSet', () => {
     });
     it('should return correct empty', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.empty).toEqual(false);
+        const stack = useStack([1, 2, 3]);
+        expect(stack.empty).toEqual(false);
         return (<></>);
       }
 
@@ -97,8 +102,8 @@ describe('useSet', () => {
     });
     it('should return correct notEmpty', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.notEmpty).toEqual(true);
+        const stack = useStack([1, 2, 3]);
+        expect(stack.notEmpty).toEqual(true);
         return (<></>);
       }
 
@@ -107,8 +112,8 @@ describe('useSet', () => {
     });
     it('should return correct difference', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.difference([1, 2])).toEqual([3]);
+        const stack = useStack([1, 2, 3]);
+        expect(stack.difference([1, 2])).toEqual([3]);
         return (<></>);
       }
 
@@ -117,8 +122,8 @@ describe('useSet', () => {
     });
     it('should return correct differenceBy', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.differenceBy([1, 2], (value) => value)).toEqual([3]);
+        const stack = useStack([1, 2, 3]);
+        expect(stack.differenceBy([1, 2], (value) => value)).toEqual([3]);
         return (<></>);
       }
 
@@ -127,8 +132,8 @@ describe('useSet', () => {
     });
     it('should return correct entries', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(Array.from(set.entries())).toEqual([[0, 1], [1, 2], [2, 3]]);
+        const stack = useStack([1, 2, 3]);
+        expect(Array.from(stack.entries())).toEqual([[0, 1], [1, 2], [2, 3]]);
         return (<></>);
       }
 
@@ -137,8 +142,8 @@ describe('useSet', () => {
     });
     it('should return correct every', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.every((value) => value > 0)).toEqual(true);
+        const stack = useStack([1, 2, 3]);
+        expect(stack.every((value) => value > 0)).toEqual(true);
         return (<></>);
       }
 
@@ -147,8 +152,8 @@ describe('useSet', () => {
     });
     it('should return correct find', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.find((value) => value > 1)).toEqual(2);
+        const stack = useStack([1, 2, 3]);
+        expect(stack.find((value) => value > 1)).toEqual(2);
         return (<></>);
       }
 
@@ -157,12 +162,12 @@ describe('useSet', () => {
     });
     it('should return correct findAndUpdate', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
+        const stack = useStack([1, 2, 3]);
         useEffect(() => {
-          set.findAndUpdate((value) => value > 1, 4);
+          stack.findAndUpdate((value) => value > 1, 4);
 
           setTimeout(() => {
-            expect(set).toEqual(new Set([1, 4, 3]));
+            expect(stack).toBe([1, 4, 3]);
           }, 0);
         }, [])
         return (<></>);
@@ -171,20 +176,10 @@ describe('useSet', () => {
       render(<Test/>);
 
     });
-    it('should return correct includes', () => {
-      const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.includes(1)).toEqual(true);
-        return (<></>);
-      }
-
-      render(<Test/>);
-
-    });
     it('should return correct intersection', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.intersection([1, 2])).toEqual([1, 2]);
+        const stack = useStack([1, 2, 3]);
+        expect(stack.intersection([1, 2])).toEqual([1, 2]);
         return (<></>);
       }
 
@@ -193,8 +188,8 @@ describe('useSet', () => {
     });
     it('should return correct intersectionBy', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.intersectionBy([1, 2], (value) => value)).toEqual([1, 2]);
+        const stack = useStack([1, 2, 3]);
+        expect(stack.intersectionBy([1, 2], (value) => value)).toEqual([1, 2]);
         return (<></>);
       }
 
@@ -203,8 +198,8 @@ describe('useSet', () => {
     });
     it('should return correct intersectionWith', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.intersectionWith([1, 2], (a, b) => a === b)).toEqual([1, 2]);
+        const stack = useStack([1, 2, 3]);
+        expect(stack.intersectionWith([1, 2], (a, b) => a === b)).toEqual([1, 2]);
         return (<></>);
       }
 
@@ -213,11 +208,11 @@ describe('useSet', () => {
     });
     it('should return correct remove', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
+        const stack = useStack([1, 2, 3]);
         useEffect(() => {
-          set.remove(2);
+          stack.remove(2);
           setTimeout(() => {
-            expect(set).toEqual(new Set([1, 3]));
+            expect(stack).toBe([1, 3]);
           })
         }, [])
 
@@ -228,11 +223,11 @@ describe('useSet', () => {
     });
     it('should return correct removeAll', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
+        const stack = useStack([1, 2, 3]);
         useEffect(() => {
-          set.removeAll();
+          stack.removeAll();
           setTimeout(() => {
-            expect(set).toEqual(new Set([]));
+            expect(stack).toBe([]);
           })
         }, [])
 
@@ -243,11 +238,11 @@ describe('useSet', () => {
     });
     it('should return correct set', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
+        const stack = useStack([1, 2, 3]);
         useEffect(() => {
-          set.set([4, 5, 6]);
+          stack.set([4, 5, 6]);
           setTimeout(() => {
-            expect(set).toEqual(new Set([4, 5, 6]));
+            expect(stack).toBe([4, 5, 6]);
           })
         }, [])
 
@@ -258,8 +253,8 @@ describe('useSet', () => {
     });
     it('should return correct size', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.size()).toBe(3);
+        const stack = useStack([1, 2, 3]);
+        expect(stack.size()).toBe(3);
         return (<></>);
       }
 
@@ -267,8 +262,8 @@ describe('useSet', () => {
     });
     it('should return correct size with predicate', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.size((value) => value > 1)).toBe(2);
+        const stack = useStack([1, 2, 3]);
+        expect(stack.size((value) => value > 1)).toBe(2);
         return (<></>);
       }
 
@@ -276,8 +271,8 @@ describe('useSet', () => {
     });
     it('should return correct some', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.some((value) => value === 2)).toBe(true);
+        const stack = useStack([1, 2, 3]);
+        expect(stack.some((value) => value === 2)).toBe(true);
         return (<></>);
       }
 
@@ -285,19 +280,19 @@ describe('useSet', () => {
     });
     it('should return correct values', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(Array.from(set.values())).toEqual([1, 2, 3]);
+        const stack = useStack([1, 2, 3]);
+        expect(Array.from(stack.values())).toEqual([1, 2, 3]);
         return (<></>);
       }
 
       render(<Test/>);
     });
-    it('should be able to iterate over the set', () => {
+    it('should be able to iterate over the array', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
+        const stack = useStack([1, 2, 3]);
         useEffect(() => {
           const result = [];
-          for (const value of Array.from(set)) {
+          for (const value of Array.from(stack)) {
             result.push(value);
           }
           expect(result).toEqual([1, 2, 3]);
@@ -307,14 +302,14 @@ describe('useSet', () => {
 
       render(<Test/>);
     });
-    it('should be able to run sort and do nothing (because order is non important in a set)', () => {
+    it('should return correct sort', () => {
       const Test = () => {
-        const set = useSet([2, 3, 2, 2, 2, 2, 1, 2, 3]);
+        const stack = useStack([2, 1, 3]);
         useEffect(() => {
-          set.sort();
+          stack.sort((a, b) => a - b);
           setTimeout(() => {
-            expect(set).toEqual(new Set([1, 2, 3]));
-          }, 0)
+            expect(stack).toBe([1, 2, 3]);
+          },0);
         }, [])
         return (<></>);
       }
@@ -323,14 +318,14 @@ describe('useSet', () => {
     });
   });
 
-  describe('Set Extra Methods Tests', () => {
-    it('should return correct add', () => {
+  describe('Stack Extra Methods Tests', () => {
+    it('should push to the stack', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
+        const stack = useStack([1, 2, 3]);
         useEffect(() => {
-          set.add(4);
+          stack.push(4);
           setTimeout(() => {
-            expect(set).toEqual(new Set([1, 2, 3, 4]));
+            expect(stack).toEqual([1, 2, 3, 4]);
           })
         }, [])
 
@@ -339,13 +334,13 @@ describe('useSet', () => {
 
       render(<Test/>);
     });
-    it('should return correct add (if provided an existing item)', () => {
+    it('should pop from the stack', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
+        const stack = useStack([1, 2, 3]);
         useEffect(() => {
-          set.add(3);
+          stack.pop();
           setTimeout(() => {
-            expect(set).toEqual(new Set([1, 2, 3]));
+            expect(stack).toEqual([1, 2]);
           })
         }, [])
 
@@ -354,85 +349,13 @@ describe('useSet', () => {
 
       render(<Test/>);
     });
-    it('should return correct addRange', () => {
+    it('should peek at the stack', () => {
       const Test = () => {
-        const set = useSet([1, 2, 3]);
+        const stack = useStack([1, 2, 3]);
         useEffect(() => {
-          set.addRange([4, 5, 6]);
-          setTimeout(() => {
-            expect(set).toEqual(new Set([1, 2, 3, 4, 5, 6]));
-          })
+          expect(stack.peek()).toEqual(3);
         }, [])
 
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
-    it('should return correct addRange (with duplicates)', () => {
-      const Test = () => {
-        const set = useSet([1, 2, 3]);
-        useEffect(() => {
-          set.addRange([3, 4, 5, 6]);
-          setTimeout(() => {
-            expect(set).toEqual(new Set([1, 2, 3, 4, 5, 6]));
-          })
-        }, [])
-
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
-    it('should return correct clear', () => {
-      const Test = () => {
-        const set = useSet([1, 2, 3]);
-        useEffect(() => {
-          set.clear();
-          setTimeout(() => {
-            expect(set).toEqual(new Set([]));
-          })
-        }, [])
-
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
-    it('should return correct delete', () => {
-      const Test = () => {
-        const set = useSet([1, 2, 3]);
-        useEffect(() => {
-          set.delete(2);
-          setTimeout(() => {
-            expect(set).toEqual(new Set([1, 3]));
-          })
-        }, [])
-
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
-    it('should return correct delete (if provided an item that does not exist)', () => {
-      const Test = () => {
-        const set = useSet([1, 2, 3]);
-        useEffect(() => {
-          set.delete(4);
-          setTimeout(() => {
-            expect(set).toEqual(new Set([1, 2, 3]));
-          })
-        }, [])
-
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
-    it('should return correct has', () => {
-      const Test = () => {
-        const set = useSet([1, 2, 3]);
-        expect(set.has(2)).toBe(true);
         return (<></>);
       }
 

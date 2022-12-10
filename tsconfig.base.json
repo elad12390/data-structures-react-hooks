@@ -23,7 +23,10 @@
       "@data-structures-react-hooks/use-array": [
         "packages/use-array/src/index.ts"
       ],
-      "@data-structures-react-hooks/use-set": ["packages/use-set/src/index.ts"]
+      "@data-structures-react-hooks/use-set": ["packages/use-set/src/index.ts"],
+      "@data-structures-react-hooks/use-stack": [
+        "packages/use-stack/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

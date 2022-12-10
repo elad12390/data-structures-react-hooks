@@ -13,7 +13,7 @@ export const useArrayFactory = <T>(array: T[], setArray: Dispatch<SetStateAction
     find: (pred: Predicate<T>) => array.find(pred),
     remove: (item: T) => setArray(arr => arr.filter(i => i !== item)),
     set: (newArray: Iterable<T>) => setArray([...newArray]),
-    sort: (compareFn: (a: T, b: T) => number) => setArray(arr => [...arr].sort(compareFn)),
+    sort: (compareFn?: (a: T, b: T) => number) => setArray(arr => [...arr].sort(compareFn)),
     removeAll: () => setArray([]),
     findAndUpdate: (pred: Predicate<T>, updatedItem: Partial<T>) => setArray(arr => {
       const idx = arr.findIndex(pred);
