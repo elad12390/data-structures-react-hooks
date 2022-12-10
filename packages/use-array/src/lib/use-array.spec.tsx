@@ -15,44 +15,59 @@ describe('useArray', () => {
       render(<Test/>);
     });
 
-    it('hook should return all required methods', () => {
+    it('should have all base methods', () => {
+      const Test = () => {
+        const hookValue = useArray([1,2,3]);
+
+        expect(hookValue).toHaveProperty('current');
+        expect(hookValue).toHaveProperty('empty');
+        expect(hookValue).toHaveProperty('notEmpty');
+        expect(hookValue).toHaveProperty('difference');
+        expect(hookValue).toHaveProperty('differenceBy');
+        expect(hookValue).toHaveProperty('entries');
+        expect(hookValue).toHaveProperty('every');
+        expect(hookValue).toHaveProperty('find');
+        expect(hookValue).toHaveProperty('findAndUpdate');
+        expect(hookValue).toHaveProperty('includes');
+        expect(hookValue).toHaveProperty('intersection');
+        expect(hookValue).toHaveProperty('intersectionBy');
+        expect(hookValue).toHaveProperty('intersectionWith');
+        expect(hookValue).toHaveProperty('remove');
+        expect(hookValue).toHaveProperty('removeAll');
+        expect(hookValue).toHaveProperty('set');
+        expect(hookValue).toHaveProperty('size');
+        expect(hookValue).toHaveProperty('some');
+        expect(hookValue).toHaveProperty('sort');
+        expect(hookValue).toHaveProperty('values');
+        expect(hookValue[Symbol.iterator]).toBeDefined();
+        expect(hookValue.toString).toBeDefined();
+
+        return (<></>);
+      }
+
+      render(<Test/>);
+    });
+
+    it('should have extra methods', () => {
       const Test = () => {
         const array = useArray([1, 2, 3]);
 
-        expect(array).toHaveProperty('current');
         expect(array).toHaveProperty('length');
-        expect(array).toHaveProperty('empty');
-        expect(array).toHaveProperty('notEmpty');
         expect(array).toHaveProperty('at');
-        expect(array).toHaveProperty('difference');
-        expect(array).toHaveProperty('differenceBy');
-        expect(array).toHaveProperty('entries');
-        expect(array).toHaveProperty('every');
         expect(array).toHaveProperty('filter');
-        expect(array).toHaveProperty('find');
-        expect(array).toHaveProperty('findAndUpdate');
         expect(array).toHaveProperty('findIndex');
-        expect(array).toHaveProperty('includes');
-        expect(array).toHaveProperty('indexOf');
-        expect(array).toHaveProperty('intersection');
-        expect(array).toHaveProperty('intersectionBy');
-        expect(array).toHaveProperty('intersectionWith');
         expect(array).toHaveProperty('map');
         expect(array).toHaveProperty('pop');
         expect(array).toHaveProperty('push');
         expect(array).toHaveProperty('pushRange');
         expect(array).toHaveProperty('reduce');
-        expect(array).toHaveProperty('remove');
-        expect(array).toHaveProperty('removeAll');
         expect(array).toHaveProperty('removeAt');
         expect(array).toHaveProperty('removeRange');
-        expect(array).toHaveProperty('set');
-        expect(array).toHaveProperty('size');
         expect(array).toHaveProperty('slice');
-        expect(array).toHaveProperty('some');
-        expect(array).toHaveProperty('sort');
+        expect(array).toHaveProperty('splice');
         expect(array).toHaveProperty('update');
-        expect(array).toHaveProperty('values');
+        expect(array).toHaveProperty('indexOf');
+
         expect(array[Symbol.iterator]).toBeDefined();
         expect(array.toString).toBeDefined();
 
@@ -63,8 +78,7 @@ describe('useArray', () => {
     });
   })
 
-  describe('Method Tests', () => {
-
+  describe('Base Method Tests', () => {
     it('should return current array shallow copy', () => {
       const Test = () => {
         const array = useArray([1, 2, 3]);
@@ -74,10 +88,15 @@ describe('useArray', () => {
 
       render(<Test/>);
     });
-    it('should return correct length', () => {
+    it('should merge arrays', () => {
       const Test = () => {
         const array = useArray([1, 2, 3]);
-        expect(array.length).toEqual(3);
+        useEffect(() => {
+          array.merge([4, 5, 6]);
+          setTimeout(() => {
+            expect(array.current).toEqual([1, 2, 3, 4, 5, 6]);
+          }, 0)
+        }, [])
         return (<></>);
       }
 
@@ -97,16 +116,6 @@ describe('useArray', () => {
       const Test = () => {
         const array = useArray([1, 2, 3]);
         expect(array.notEmpty).toEqual(true);
-        return (<></>);
-      }
-
-      render(<Test/>);
-
-    });
-    it('should return correct at', () => {
-      const Test = () => {
-        const array = useArray([1, 2, 3]);
-        expect(array.at(0)).toEqual(1);
         return (<></>);
       }
 
@@ -153,16 +162,6 @@ describe('useArray', () => {
       render(<Test/>);
 
     });
-    it('should return correct filter', () => {
-      const Test = () => {
-        const array = useArray([1, 2, 3]);
-        expect(array.filter((value) => value > 1)).toEqual([2, 3]);
-        return (<></>);
-      }
-
-      render(<Test/>);
-
-    });
     it('should return correct find', () => {
       const Test = () => {
         const array = useArray([1, 2, 3]);
@@ -174,45 +173,15 @@ describe('useArray', () => {
 
     });
     it('should return correct findAndUpdate', () => {
-        const Test = () => {
-          const array = useArray([1, 2, 3]);
-          useEffect(() => {
-            array.findAndUpdate((value) => value > 1, 4);
-
-            setTimeout(() => {
-              expect(array).toBe([1, 4, 3]);
-            }, 0);
-          }, [])
-          return (<></>);
-        }
-
-        render(<Test/>);
-
-    });
-    it('should return correct findIndex', () => {
       const Test = () => {
         const array = useArray([1, 2, 3]);
-        expect(array.findIndex((value) => value > 1)).toEqual(1);
-        return (<></>);
-      }
+        useEffect(() => {
+          array.findAndUpdate((value) => value > 1, 4);
 
-      render(<Test/>);
-
-    });
-    it('should return correct includes', () => {
-      const Test = () => {
-        const array = useArray([1, 2, 3]);
-        expect(array.includes(1)).toEqual(true);
-        return (<></>);
-      }
-
-      render(<Test/>);
-
-    });
-    it('should return correct indexOf', () => {
-      const Test = () => {
-        const array = useArray([1, 2, 3]);
-        expect(array.indexOf(1)).toEqual(0);
+          setTimeout(() => {
+            expect(array).toBe([1, 4, 3]);
+          }, 0);
+        }, [])
         return (<></>);
       }
 
@@ -243,6 +212,164 @@ describe('useArray', () => {
       const Test = () => {
         const array = useArray([1, 2, 3]);
         expect(array.intersectionWith([1, 2], (a, b) => a === b)).toEqual([1, 2]);
+        return (<></>);
+      }
+
+      render(<Test/>);
+
+    });
+    it('should return correct remove', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        useEffect(() => {
+          array.remove(2);
+          setTimeout(() => {
+            expect(array).toBe([1, 3]);
+          })
+        }, [])
+
+        return (<></>);
+      }
+
+      render(<Test/>);
+    });
+    it('should return correct removeAll', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        useEffect(() => {
+          array.removeAll();
+          setTimeout(() => {
+            expect(array).toBe([]);
+          })
+        }, [])
+
+        return (<></>);
+      }
+
+      render(<Test/>);
+    });
+    it('should return correct set', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        useEffect(() => {
+          array.set([4, 5, 6]);
+          setTimeout(() => {
+            expect(array).toBe([4, 5, 6]);
+          })
+        }, [])
+
+        return (<></>);
+      }
+
+      render(<Test/>);
+    });
+    it('should return correct size', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        expect(array.size()).toBe(3);
+        return (<></>);
+      }
+
+      render(<Test/>);
+    });
+    it('should return correct size with predicate', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        expect(array.size((value) => value > 1)).toBe(2);
+        return (<></>);
+      }
+
+      render(<Test/>);
+    });
+    it('should return correct some', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        expect(array.some((value) => value === 2)).toBe(true);
+        return (<></>);
+      }
+
+      render(<Test/>);
+    });
+    it('should return correct values', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        expect(Array.from(array.values())).toEqual([1, 2, 3]);
+        return (<></>);
+      }
+
+      render(<Test/>);
+    });
+    it('should be able to iterate over the array', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        useEffect(() => {
+          const result = [];
+          for (const value of Array.from(array)) {
+            result.push(value);
+          }
+          expect(result).toEqual([1, 2, 3]);
+        }, [])
+        return (<></>);
+      }
+
+      render(<Test/>);
+    });
+  });
+
+  describe('useArray Extra Methods Tests', () => {
+    it('should return correct length', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        expect(array.length).toEqual(3);
+        return (<></>);
+      }
+
+      render(<Test/>);
+    });
+    it('should return correct at', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        expect(array.at(0)).toEqual(1);
+        return (<></>);
+      }
+
+      render(<Test/>);
+
+    });
+    it('should return correct filter', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        expect(array.filter((value) => value > 1)).toEqual([2, 3]);
+        return (<></>);
+      }
+
+      render(<Test/>);
+
+    });
+    it('should return correct findIndex', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        expect(array.findIndex((value) => value > 1)).toEqual(1);
+        return (<></>);
+      }
+
+      render(<Test/>);
+
+    });
+    it('should return correct includes', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        expect(array.includes(1)).toEqual(true);
+        return (<></>);
+      }
+
+      render(<Test/>);
+
+    });
+    it('should return correct indexOf', () => {
+      const Test = () => {
+        const array = useArray([1, 2, 3]);
+        expect(array.indexOf(1)).toEqual(0);
         return (<></>);
       }
 
@@ -340,36 +467,6 @@ describe('useArray', () => {
 
       render(<Test/>);
     });
-    it('should return correct remove', () => {
-      const Test = () => {
-        const array = useArray([1, 2, 3]);
-        useEffect(() => {
-          array.remove(2);
-          setTimeout(() => {
-            expect(array).toBe([1, 3]);
-          })
-        }, [])
-
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
-    it('should return correct removeAll', () => {
-      const Test = () => {
-        const array = useArray([1, 2, 3]);
-        useEffect(() => {
-          array.removeAll();
-          setTimeout(() => {
-            expect(array).toBe([]);
-          })
-        }, [])
-
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
     it('should return correct removeAt', () => {
       const Test = () => {
         const array = useArray([1, 2, 3]);
@@ -400,52 +497,10 @@ describe('useArray', () => {
 
       render(<Test/>);
     });
-    it('should return correct set', () => {
-      const Test = () => {
-        const array = useArray([1, 2, 3]);
-        useEffect(() => {
-          array.set([4, 5, 6]);
-          setTimeout(() => {
-            expect(array).toBe([4, 5, 6]);
-          })
-        }, [])
-
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
-    it('should return correct size', () => {
-      const Test = () => {
-        const array = useArray([1, 2, 3]);
-        expect(array.size()).toBe(3);
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
-    it('should return correct size with predicate', () => {
-      const Test = () => {
-        const array = useArray([1, 2, 3]);
-        expect(array.size((value) => value > 1)).toBe(2);
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
     it('should return correct slice', () => {
       const Test = () => {
         const array = useArray([1, 2, 3]);
         expect(array.slice(0, 1)).toEqual([1]);
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
-    it('should return correct some', () => {
-      const Test = () => {
-        const array = useArray([1, 2, 3]);
-        expect(array.some((value) => value === 2)).toBe(true);
         return (<></>);
       }
 
@@ -479,15 +534,6 @@ describe('useArray', () => {
 
       render(<Test/>);
     });
-    it('should return correct values', () => {
-      const Test = () => {
-        const array = useArray([1, 2, 3]);
-        expect(Array.from(array.values())).toEqual([1, 2, 3]);
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
     it('should return correct splice with 1 argument', () => {
       const Test = () => {
         const array = useArray([1, 2, 3]);
@@ -496,21 +542,6 @@ describe('useArray', () => {
           setTimeout(() => {
             expect(array).toBe([1]);
           },0);
-        }, [])
-        return (<></>);
-      }
-
-      render(<Test/>);
-    });
-    it('should be able to iterate over the array', () => {
-      const Test = () => {
-        const array = useArray([1, 2, 3]);
-        useEffect(() => {
-          const result = [];
-          for (const value of Array.from(array)) {
-            result.push(value);
-          }
-          expect(result).toEqual([1, 2, 3]);
         }, [])
         return (<></>);
       }

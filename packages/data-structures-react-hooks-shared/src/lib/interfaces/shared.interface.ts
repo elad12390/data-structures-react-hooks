@@ -10,7 +10,7 @@ export type UseDataStructure<T, S> = {
   findAndUpdate: (pred: Predicate<T>, updatedItem: Partial<T>) => void;
   remove: (item: T) => void;
   removeAll: () => void;
-  sort: (compareFn: (a: T, b: T) => number) => void;
+  sort: (compareFn?: (a: T, b: T) => number) => void;
   merge: (other: S) => void;
   set: (newCollection: Iterable<T>) => void;
   [Symbol.iterator](): Generator<T>;
